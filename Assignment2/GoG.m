@@ -1,15 +1,16 @@
-### Task A - Gradient of Gaussian
+% Task A - Gradient of Gaussian
 
-function [filteredImg] = GoG(img, deviation)
+function [gradientX, gradientY] = GoG(img, deviation)
 
-  # A) a -> Kernels
+  % A) a -> Kernels
   [xKernel, yKernel] = GoGKernels(deviation);
  
-  # A) b -> Apply filter
+  % A) b -> Apply filter
   [gradientX, gradientY] = GoGGradients(img, xKernel, yKernel);
   
-  # A) c -> Gradient magnitude
+  % A) c -> Gradient magnitude
   gradientMagnitude(gradientX, gradientY);
+  
 
 end
 
@@ -20,7 +21,7 @@ function [xKernel, yKernel] = GoGKernels(deviation)
   xArray = zeros(size,size);
   for i = 1:size
     xArray(:, i) = i - (radius + 1);
-  endfor
+  end
  
   yArray = xArray';
   
@@ -37,14 +38,11 @@ function [gradientX, gradientY] = GoGGradients(img, xKernel, yKernel)
   gradientX = conv2(img, xKernel);
   gradientY = conv2(img, yKernel);
  
-  # figure, imshow(img), title("Original");
-  # figure, imshow(gradientX, []), title("Gradient X");
-  # figure, imshow(gradientY, []), title("Gradient Y");
+  % figure, imshow(img), title("Original");
+  % figure, imshow(gradientX, []), title("Gradient X");
+  % figure, imshow(gradientY, []), title("Gradient Y");
 end
 
-function [output] = convolution(img, kernel, radius)
-    ## TODO  
-end
 
 function [output] = gradientMagnitude(gx, gy)
   output = sqrt(gx .^ 2 + gy .^ 2);
