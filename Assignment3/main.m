@@ -27,6 +27,7 @@ function main
   axis on, axis normal; xlabel("theta [degrees]"); ylabel("rho [pixels]");
   
   % f) Local maxima
+  % https://octave.sourceforge.io/image/function/houghpeaks.html
   peaks = houghpeaks(hough_votes, 50, 'threshold', 5);
   peaks_rho = rho(peaks(:,1));
   peaks_theta = theta(peaks(:,2));
@@ -37,21 +38,22 @@ function main
   hold off;
   
   % h) Derive line segments
+  % https://octave.sourceforge.io/image/function/houghlines.html
   lines = houghlines(binary_edge_mask, theta, rho, peaks, 'FillGap', 5, 'MinLength', 7);
 
   % i) Plot on figure
   subplot(1, 4, 4);
   imshow(I_ready), title ("Lines");
   hold on;
-  max_len = 0;
 
-  for k = 1:length(lines)
-     xy = [lines(k).point1; lines(k).point2];
-     plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
+  % lines is struct array: point1, point2, theta, rho
+  for i = 1:length(lines)
+     points = [lines(i).point1; lines(i).point2];
+     plot(points(:,1), points(:,2), 'LineWidth', 2, 'g');
 
      % Plot beginnings and ends of lines
-     plot(xy(1,1),xy(1,2),'x','LineWidth',1,'Color','yellow');
-     plot(xy(2,1),xy(2,2),'x','LineWidth',1,'Color','red');
+     plot(points(1,1), points(1,2), 'x', 'LineWidth', 1, 'Color', 'yellow');
+     plot(points(2,1), points(2,2), 'x', 'LineWidth', 1, 'Color', 'red');
 
   end 
   
